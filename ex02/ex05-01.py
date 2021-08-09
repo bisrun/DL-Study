@@ -27,8 +27,7 @@ def run():
         print(a2)
         Ya = np.dot(tr, a2)
         print(Ya)
-
-        print("end")
+        print("a2 != Ya")
 
     except KeyboardInterrupt:
         print('\n\rquit')

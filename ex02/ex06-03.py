@@ -1,14 +1,15 @@
 import numpy as np
 
 from perceptron2 import Perceptron2
-
+from ho_kashyap_proc import ho_kashyap_proc as ho
 def run():
     try:
         print('given\n')
 
-        learning_rate = 0.2
-        threshold = 10
-        weight = np.array([0,1,0.5])
+        learning_rate = 0.9
+        threshold = 200
+        weight = np.array([1,1,1])
+        b = np.array([1,1,1,1])
         samples= np.array([ [1,6,9],
                             [1,5,7],
                             [1,5,9],
@@ -18,15 +19,12 @@ def run():
 
         #---------------------------------------
 
-        my_perceptron = Perceptron2(no_of_inputs, threshold, learning_rate)
-        tr = my_perceptron.normalize_traindata(samples, labels)
-        trinv = np.dot( np.linalg.inv( np.dot( np.transpose(tr), tr )), np.transpose(tr))
+        my_ho = ho(no_of_inputs, threshold, learning_rate)
+        tr = my_ho.normalize_traindata(samples, labels)
 
-        print(trinv)
-        a2 = np.dot(trinv, np.array([1,1,1,1]))
-        print(a2)
-        Ya = np.dot(tr, a2)
-        print(Ya)
+        weight = my_ho.train(tr,weight, b )
+
+        print(weight)
 
         print("end")
 
