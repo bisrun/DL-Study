@@ -1,18 +1,28 @@
 import numpy
 
-from perceptron import Perceptron
-
+import ex01
+import ex02
+import ex03
+import ex04
+import ex05
+import ex06_01
+import ex06_ho_kashyap_proc
+import ex01
 def run():
     try:
-        print('run\n')
-        training_inputs = numpy.array([[1,1,1,-1,-1],
-                   [1,1,1,1,1],
-                   [1,-1,-1,-1,1],
-                   [1,1,-1,-1,1]])
-        labels = numpy.array([1,-1,-1,1])
-        no_of_inputs = 4
-        my_perceptron = Perceptron(4)
-        my_perceptron.train(training_inputs, labels)
+        ex01.run()
+        print()
+        ex02.run()
+        print()
+        ex03.run()
+        print()
+        ex04.run()
+        print()
+        ex05.run()
+        print()
+        ex06_01.run()
+        print()
+        ex06_ho_kashyap_proc.run()
 
 
 

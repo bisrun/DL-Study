@@ -23,12 +23,11 @@ class Perceptron2(object):
             for inputs in training_inputs:
                 prediction = self.predict(inputs)
                 self.weights += self.learning_rate * (1 - prediction) * inputs
-
-                print ("weight={}", self.weights)
+        return self.weights
 
     def normalize_traindata(self, samples, labels):
         training_inputs = np.zeros((samples.shape[0], samples.shape[1]))
-        for index, (input, label) in enumerate( zip(samples, labels)):
+        for index, (input, label) in enumerate(zip(samples, labels)):
             a = input * label
             training_inputs[index] = a
 

@@ -1,10 +1,12 @@
 import numpy as np
 
-from perceptron2 import Perceptron2
 from ho_kashyap_proc import ho_kashyap_proc as ho
+
+np.set_printoptions(formatter={'float_kind': lambda x: "{0:0.3f}".format(x)})
+
 def run():
     try:
-        print('given\n')
+        print('#ex06-Ho-Kashyap procedure')
 
         learning_rate = 0.9
         threshold = 200
@@ -21,12 +23,20 @@ def run():
 
         my_ho = ho(no_of_inputs, threshold, learning_rate)
         tr = my_ho.normalize_traindata(samples, labels)
+        weight = my_ho.train(tr, weight, b )
+        Ya= np.dot(tr, weight)
 
-        weight = my_ho.train(tr,weight, b )
+        print("a={}, b={}".format(weight, my_ho.b))
+        print("Ya={}".format(Ya))
 
-        print(weight)
+        Ya_negatives = list(filter(lambda x: True if x < 0 else False, Ya))
+        # all_positive = all(Ya)
+        all_positive = True if len(Ya_negatives) <= 0 else False
+        if all_positive:
+            print("This solution gives a separating hyperplane since Ya > 0")
+        else :
+            print("This solution does not give a separating hyperplane since Ya < 0")
 
-        print("end")
 
     except KeyboardInterrupt:
         print('\n\rquit')
