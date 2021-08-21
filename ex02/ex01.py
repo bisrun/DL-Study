@@ -4,18 +4,19 @@ from perceptron2 import Perceptron2
 
 def run():
     try:
-        print('given\n')
+        print('#ex01')
 
         learning_rate = 0.2
         threshold = 10
         weight = np.array([0,1,0.5])
-        samples= np.array([[1,2,1],
-                    [1,4,3],
-                    [1,3,5],
-                    [1,1,3],
-                    [1,5,6]])
+        samples= np.array([ [1,1,1],
+                            [1,2,-2],
+                            [1,-1,-1.5],
+                            [1,-2,-1],
+                            [1,-2,1],
+                            [1,1.5,-0.5]])
         no_of_inputs = samples.shape[0]
-        labels = np.array([1, 1, 1, -1, -1])
+        labels = np.array([1, -1, -1, -1, 1, 1])
 
         #---------------------------------------
 
@@ -23,7 +24,9 @@ def run():
         training_inputs = my_perceptron.normalize_traindata(samples, labels)
 
         my_perceptron.setWeight(weight)
-        my_perceptron.train(training_inputs)
+        weight = my_perceptron.train(training_inputs)
+
+        print("weight={}",weight)
 
 
 

@@ -14,12 +14,14 @@ class ho_kashyap_proc(object):
         return False
 
     def train(self, training_inputs, weight, b ):
+        self.b = b
         for index in range(self.threshold) :
-            e = np.dot(training_inputs, weight) - b
-            b = b + self.learning_rate * (e + np.abs(e))
-            weight = np.dot( np.dot(np.linalg.inv( np.dot(training_inputs.T, training_inputs)), training_inputs.T), b )
+            e = np.dot(training_inputs , weight) - self.b
+            self.b = self.b + self.learning_rate * (e + np.abs(e))
+            weight = np.dot( np.dot(np.linalg.inv( np.dot(training_inputs .T, training_inputs )), training_inputs .T), self.b)
 
-            if self.predict( training_inputs, weight ) :
+
+            if self.predict( training_inputs , weight ) :
                 return weight
         return 0
 
