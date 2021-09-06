@@ -61,7 +61,7 @@ class Multiclass:
     def predict(self, H):
         Z = - H @ self.W
         P = softmax(Z, axis=1)
-        return np.argmax(P, axis=1)
+        return np.argmax(P, axis=1) #onehot enc
 
 
 

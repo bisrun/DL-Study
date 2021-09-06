@@ -17,6 +17,7 @@ def get_dataset():
 def get_models():
     models = dict()
 
+    #p 는 error 반영 비율
     for p in [0.0, 0.0001, 0.001, 0.01, 0.1, 1.0]:
         # create name for model
         key = '%.4f' % p
@@ -27,7 +28,7 @@ def get_models():
         else:
             models[key] = LogisticRegression(multi_class='multinomial', solver='lbfgs', penalty='l2', C=p)
 
-        return models
+    return models
 
 # evaluate a give model using cross-validation
 def evaluate_model(model, X, y):
@@ -36,6 +37,7 @@ def evaluate_model(model, X, y):
     # evaluate the model
     scores = cross_val_score(model, X, y, scoring='accuracy', cv=cv, n_jobs=-1)
     return scores
+
 # define dataset
 X, y = get_dataset()
 # get the models to evaluate
@@ -50,6 +52,7 @@ for name, model in models.items():
     names.append(name)
     # summarize progress along the way
     print('>%s %.3f (%.3f)' % (name, mean(scores), std(scores)))
+
 # plot model performance for comparison
 pyplot.boxplot(results, labels=names, showmeans=True)
 pyplot.show()
