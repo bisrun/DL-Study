@@ -10,7 +10,7 @@ import argparse
 from datetime import datetime
 
 #실행명령
-#C:\anaconda3\envs\env05\python E:\project2\study\DL-Study\getoffwork\checkwork.py
+#C:\anaconda3\envs\env05\python E:\project2\study\DL-Study\getoffwork
 #  --target=IN --config="E:/project2/study/DL-Study/getoffwork/nvconfig.ini"
 
 
@@ -18,19 +18,18 @@ class checkwork:
     def __init__(self):
         logManager = Logger.instance()
         self._logger = logManager.getLogger()
-        self._logger.info("---c1---")
+
         self.config = nvconfig.instance()
-        self._logger.info("---c2---")
+
         try:
-            self._logger.info("---c3---")
             options = webdriver.ChromeOptions()
-            self._logger.info("---c4---")
-            options.add_argument('headless')
-            options.add_argument('window-size=1920x1080')
-            options.add_argument("disable-gpu")
+            if self.config._visibleBrowser == 0 :
+                options.add_argument('headless')
+                options.add_argument('window-size=1920x1080')
+                options.add_argument("disable-gpu")
 
             self.driver = webdriver.Chrome(self.config._DriverPath, chrome_options=options )
-            self._logger.info("---c7---")
+
         except Exception as e:
             self._logger.error("init exception ", e)
             exit()
@@ -38,23 +37,21 @@ class checkwork:
     def login(self):
         self._logger.info("try to login")
         #driver.implicitly_wait(10) #
-        self._logger.info("--2--")
+
         try:
             self.driver.get(self.config._initUrl)
             self.driver.implicitly_wait(3)
             elem_login=self.driver.find_element_by_id("TextUserID")
             elem_login.clear()
             elem_login.send_keys(self.config._loginId)
-            self._logger.info("--3--")
+
             elem_login = self.driver.find_element_by_id("TextPassword")
             elem_login.send_keys(self.config._loginPwd)
 
-            self._logger.info("--4--")
             #button click
             self.driver.find_element_by_xpath("""//*[@id="LoginButton"]""").click()
-            self._logger.info("--5--")
             self.driver.implicitly_wait(3)
-            self._logger.info("--6--")
+
         except Exception as e:
             self._logger.error("login exception ", e)
             exit()
@@ -101,12 +98,10 @@ class checkwork:
 
 def run(target):
     try :
-
         cm = checkwork()
         cm.login()
         cm.targetClick(target)
         cm.close()
-
 
     except Exception as e:
         print("exception ", e)
@@ -118,13 +113,15 @@ if __name__ == '__main__':
     argParser = argparse.ArgumentParser()
     argParser.add_argument('--target', required=True, help='출근이니 퇴근이니? in/out')
     argParser.add_argument('--config', required=False, help='config file path')
+    argParser.add_argument('--visible', required=False, default =0, help='browser visibility')
     argret = argParser.parse_args()
 
     try :
         args = argParser.parse_args()
 
         cc = nvconfig.instance()
-        cc.setInit(args.config)
+        cc.setInit(args.config, args.visible)
+
         ret = cc.load_file()
         if ret < 0 :
             exit()
@@ -140,7 +137,7 @@ if __name__ == '__main__':
             if now.hour < 18 or now.minute < 3  :
                 logger.info("18:03전에 호출됨. 종료함")
                 exit()
-        logger.info("--1--")
+
         run(args.target)
     except argparse.ArgumentError:
         print('Catching an argumentError')

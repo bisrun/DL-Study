@@ -16,7 +16,7 @@ class nvconfig :
 
         return cls._instance
 
-    def setInit(self, config_dir_path):
+    def setInit(self, config_dir_path, visible ):
         if config_dir_path == None :
             self._config_dir_path = os.getcwd()
         else:
@@ -24,7 +24,7 @@ class nvconfig :
 
         self._config_file_path =os.path.join(self._config_dir_path, 'nvconfig.ini')
             #self._config_file_path =os.path.join(config_file_path, 'nvconfig.ini')
-
+        self._visibleBrowser = visible
 
 
     def load_file(self):
