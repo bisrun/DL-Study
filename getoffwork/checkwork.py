@@ -22,17 +22,17 @@ class checkwork:
         self.config = nvconfig.instance()
 
         try:
-            options = webdriver.ChromeOptions()
+            browser_options = webdriver.ChromeOptions()
             if self.config._visibleBrowser == 0 :
-                options.add_argument('headless')
-                options.add_argument('window-size=1920x1080')
-                options.add_argument("disable-gpu")
+                browser_options.add_argument('headless')
+                browser_options.add_argument('window-size=1920x1080')
+                browser_options.add_argument("disable-gpu")
 
-            self.driver = webdriver.Chrome(self.config._DriverPath, chrome_options=options )
+            self.driver = webdriver.Chrome(self.config._DriverPath, options=browser_options )
 
         except Exception as e:
             self._logger.error("init exception ", e)
-            exit()
+            quit(4)
     #step 1
     def login(self):
         self._logger.info("try to login")
@@ -54,7 +54,7 @@ class checkwork:
 
         except Exception as e:
             self._logger.error("login exception ", e)
-            exit()
+            quit(3)
     #step 2
     def targetClick(self, target):
         try:
@@ -65,7 +65,7 @@ class checkwork:
             fm_myframe = self.driver.find_element_by_xpath("""//*[@id="subtdc32c"]/iframe""")
             self.driver.switch_to.frame(fm_myframe)
 
-            self._logger.info("target :%s", target )
+            self._logger.info("target click :%s", target)
             #출석 버튼
             if "IN" == target.upper():
                 self.driver.find_element_by_xpath("""//*[@id="disIN"]""").click()
@@ -124,23 +124,23 @@ if __name__ == '__main__':
 
         ret = cc.load_file()
         if ret < 0 :
-            exit()
+            quit(1)
 
         logManager = Logger.instance()
         logManager.setLogger(cc._logFilePath)
         logger = logManager.getLogger()
         logger.info("-------------start--------------")
-        logger.info("target: %s", args.target)
+        logger.info("target argument: %s", args.target)
 
         if args.target.upper() == "OUT" :
             now = datetime.now().time()
-            if now.hour < 18 or now.minute < 3  :
-                logger.info("18:03전에 호출됨. 종료함")
-                exit()
+            if now.hour < 18 or now.minute < 15 :
+                logger.info("18:05전에 호출됨. 종료함")
+                quit(2)
 
         run(args.target)
-    except argparse.ArgumentError:
-        print('Catching an argumentError')
+    except Exception as e:
+        logger.info("main func error :  %s",e )
 
     sys.exit()
 

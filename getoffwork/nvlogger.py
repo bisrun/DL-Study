@@ -18,7 +18,7 @@ class Logger:
 
     def setLogger(self, log_file_path):
         self.log_file_path = log_file_path
-        self.logger = logging.getLogger("cleanrp")
+        self.logger = logging.getLogger("checkwork")
         self.logger.setLevel(logging.DEBUG)
 
         #formatter
@@ -35,7 +35,6 @@ class Logger:
         self.logger.addHandler(self.fileHandler)
         self.logger.addHandler(self.streamHandler)
 
-        self.logger.info("*** start build ***")
 
     def getLogger(self):
         return self.logger
