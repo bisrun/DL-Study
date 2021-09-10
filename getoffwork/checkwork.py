@@ -82,9 +82,10 @@ class checkwork:
         try:
             result  = Alert(self.driver)
             #alert message 확인
-            self._logger.info(result.text)
-            #alert 창 확인
-            result.accept()
+            if result is not None :
+                self._logger.info(result.text)
+                #alert 창 확인
+                result.accept()
         except Exception as e:
             self._logger.error("targetClick exception(close popup) ", e)
             pass
@@ -134,7 +135,7 @@ if __name__ == '__main__':
 
         if args.target.upper() == "OUT" :
             now = datetime.now().time()
-            if now.hour < 18 or now.minute < 15 :
+            if now.hour < 18 or now.minute < 5 :
                 logger.info("18:05전에 호출됨. 종료함")
                 quit(2)
 
