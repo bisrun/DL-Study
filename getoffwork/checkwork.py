@@ -2,7 +2,11 @@
 from selenium import webdriver
 
 #from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from nvconfig import nvconfig
 from nvlogger import Logger
 import sys
@@ -76,19 +80,40 @@ class checkwork:
 
         except Exception as e:
             self._logger.error("targetClick exception ", e)
+            return
+
+        """
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '.lst_site'))
+            )
+        except TimeoutException:
+            print('Time Out')"""
+
+        try:
+            #Wait 10 seconds till alert is present
+            wait = WebDriverWait(self.driver, 5)
+            wait.until(EC.alert_is_present(),"timed out waiting")
+            alert = Alert(self.driver)
+            self._logger.info(alert.text)
+            alert.accept()
+
+        except Exception as e:
+            self._logger.info("there is no popup(timeout waiting)", e)
             pass
 
+
         #만약 popup 창이 있다면 닫는다.
-        try:
-            result  = Alert(self.driver)
-            #alert message 확인
-            if result is not None :
-                self._logger.info(result.text)
-                #alert 창 확인
-                result.accept()
-        except Exception as e:
-            self._logger.error("targetClick exception(close popup) ", e)
-            pass
+        # try:
+        #     result  = Alert(self.driver)
+        #     #alert message 확인
+        #     if result is not None :
+        #         self._logger.info(result.text)
+        #         #alert 창 확인
+        #         result.accept()
+        # except Exception as e:
+        #     self._logger.error("targetClick exception(close popup) ", e)
+        #     pass
 
     def close(self):
         self.driver.switch_to.default_content() #처음 상태로 되돌아옴
