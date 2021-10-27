@@ -66,7 +66,7 @@ class checkwork:
             elem_mainFrame=self.driver.find_element_by_xpath("""//*[@id="mainFrame"]""")
             self.driver.switch_to.frame(elem_mainFrame)
 
-            fm_myframe = self.driver.find_element_by_xpath("""//*[@id="subtdc32c"]/iframe""")
+            fm_myframe = self.driver.find_element_by_xpath("""//*[@id="subtde38e"]/iframe""")
             self.driver.switch_to.frame(fm_myframe)
 
             self._logger.info("target click :%s", target)
@@ -100,7 +100,7 @@ class checkwork:
 
         except Exception as e:
             self._logger.info("there is no popup(timeout waiting)", e)
-            pass
+
 
 
         #만약 popup 창이 있다면 닫는다.
